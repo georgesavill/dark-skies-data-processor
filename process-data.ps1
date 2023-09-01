@@ -65,7 +65,7 @@ Write-Host "Processing..."
 
 $dsdStartEndTimes = Get-DsdTimes $dsdTimesInputCSV
 
-Export-DarkSkiesData $magDataInputCSV $dsdStartEndTimes
+Export-DarkSkiesData $magDataInputCSV $outputFilename $dsdStartEndTimes
 
 Write-Host "Done!"
 Read-Host -Prompt "Press ENTER to quit" | Out-Null
