@@ -35,15 +35,13 @@ function Get-DsdTimes {
 function Export-DarkSkiesData {
     param (
         [string] $magFilename,
+        [string] $outputFilename,
         [hashtable[]] $dsdStartEndTimes
     )
     
-    $outputFilename = $(".\output_$([DateTime]::Now.ToString("yyyy-MM-dd")).csv")
     $dataToExport = @()
 
     Import-Csv -Path $magFilename | ForEach-Object {
-        # $_.PSObject.Properties["Time"].value
-        # $_.PSObject.Properties["Cloud clear"].value
         foreach ($timePeriod in $dsdStartEndTimes) {
             if (([DateTime]::Parse($_.PSObject.Properties["Time"].value) -gt $timePeriod["start"]) -and ([DateTime]::Parse($_.PSObject.Properties["Time"].value) -lt $timePeriod["end"])) {
                 $dataToExport += [PSCustomObject]@{
@@ -61,6 +59,7 @@ $dsdTimesInputCSV = Read-Host "Enter full path of dark skies date/time ranges CS
 Test-Filename $dsdTimesInputCSV
 $magDataInputCSV = Read-Host "Enter full path of mag (no cloudy data) CSV file"
 Test-Filename $magDataInputCSV
+$outputFilename = Read-Host "Enter full path for output filename of CSV file"
 
 Write-Host "Processing..."
 
